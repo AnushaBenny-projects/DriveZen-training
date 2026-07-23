@@ -115,3 +115,4 @@ const totalPrize = function(...cart){
 }
 console.log(totalPrize(...cart));
 console.log(totalPrize(...newCart));
+
