@@ -9,5 +9,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnushaBenny-projects/DriveZen-training.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AnushaBenny-projects/DriveZen-training/issues"
+  },
+  "homepage": "https://github.com/AnushaBenny-projects/DriveZen-training#readme"
 }
