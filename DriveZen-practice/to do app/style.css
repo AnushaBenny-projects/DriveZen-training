@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.todoapp {
+    background-color: white;
+    width: 350px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form */
+
+form {
+    display: flex;
+    gap: 10px;
+}
+
+/* Input */
+
+#taskInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Add button */
+
+form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+/* Task list */
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Each task */
+
+li {
+    background-color: #eeeeee;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Delete button */
+
+li button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
