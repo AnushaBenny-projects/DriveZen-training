@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>To-Do List</title>
-
+    <title>DummyJSON Todo App</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="todoapp">
+<div class="container">
 
-        <h1>To-Do List</h1>
+    <h1> Todo App</h1>
 
-        <form id="todoForm">
+    <div class="input-box">
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="Enter a new task">
 
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="Enter a task"
-            >
+        <button id="addBtn">Add Todo</button>
 
-            <button type="submit">
-                Add Task
-            </button>
-
-        </form>
-
-        <ul id="taskList"></ul>
-
+        <button id="refreshBtn">Refresh</button>
     </div>
 
-    <script src="script.js"></script>
+    <ul id="taskList"></ul>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
