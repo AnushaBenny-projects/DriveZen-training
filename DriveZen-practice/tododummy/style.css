@@ -1,78 +1,89 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    padding: 40px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-h1 {
-    margin-bottom: 20px;
+body{
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#74ebd5,#9face6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
 }
 
-.todoapp {
-    background-color: white;
-    width: 350px;
-    margin: auto;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.container{
+    width:600px;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
 }
 
-/* Form */
-
-form {
-    display: flex;
-    gap: 10px;
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
 }
 
-/* Input */
-
-#taskInput {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
+.input-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
 }
 
-/* Add button */
-
-form button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: green;
-    color: white;
-    cursor: pointer;
+input{
+    flex:1;
+    padding:12px;
+    border:2px solid #6c63ff;
+    border-radius:8px;
+    font-size:16px;
 }
 
-/* Task list */
-
-ul {
-    list-style: none;
-    padding: 0;
+button{
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
 }
 
-/* Each task */
-
-li {
-    background-color: #eeeeee;
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 5px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+#addBtn{
+    background:#6c63ff;
 }
 
-/* Delete button */
+#refreshBtn{
+    background:#17a2b8;
+}
 
-li button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 5px;
-    cursor: pointer;
+.complete-btn{
+    background:#28a745;
+}
+
+.delete-btn{
+    background:#dc3545;
+}
+
+ul{
+    list-style:none;
+}
+
+li{
+    background:#f5f5f5;
+    margin-bottom:12px;
+    padding:12px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+}
+
+li span{
+    flex:1;
+    font-size:16px;
+}
+
+li button{
+    margin-left:8px;
 }
