@@ -1,27 +1,162 @@
+const taskInput = document.getElementById("taskInput");
+const addBtn = document.getElementById("addBtn");
+const refreshBtn = document.getElementById("refreshBtn");
 const taskList = document.getElementById("taskList");
 
-fetch("https://dummyjson.com/todos")
-  .then((response) => response.json())
-  .then((data) => {
+// GET TODOS
+function getTodos() {
 
-    data.todos.forEach((todo) => {
+    taskList.innerHTML = "";
 
-      const li = document.createElement("li");
-      li.innerText = todo.todo;
+    fetch("https://dummyjson.com/todos")
+        .then((response) => response.json())
+        .then((data) => {
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.innerText = "Delete";
+            data.todos.slice(0,10).forEach((todo) => {
 
-      deleteBtn.addEventListener("click", () => {
-        li.remove();
-      });
+                displayTodo(todo);
 
-      li.appendChild(deleteBtn);
-      taskList.appendChild(li);
+            });
+
+        })
+        .catch((error) => console.log(error));
+
+}
+
+// DISPLAY TODO
+function displayTodo(todo){
+
+    const li = document.createElement("li");
+
+    const text = document.createElement("span");
+
+    text.innerText = todo.todo;
+
+    if(todo.completed){
+        text.style.textDecoration="line-through";
+    }
+
+    // COMPLETE BUTTON
+
+    const completeBtn = document.createElement("button");
+
+    completeBtn.innerText="✔ Complete";
+
+    completeBtn.classList.add("complete-btn");
+
+    completeBtn.addEventListener("click",()=>{
+
+        fetch(`https://dummyjson.com/todos/${todo.id}`,{
+
+            method:"PUT",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                completed:true
+            })
+
+        })
+
+        .then((response)=>response.json())
+
+        .then(()=>{
+
+            text.style.textDecoration="line-through";
+
+        });
 
     });
 
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    // DELETE BUTTON
+
+    const deleteBtn=document.createElement("button");
+
+    deleteBtn.innerText="🗑 Delete";
+
+    deleteBtn.classList.add("delete-btn");
+
+    deleteBtn.addEventListener("click",()=>{
+
+        fetch(`https://dummyjson.com/todos/${todo.id}`,{
+
+            method:"DELETE"
+
+        })
+
+        .then((response)=>response.json())
+
+        .then(()=>{
+
+            li.remove();
+
+        });
+
+    });
+
+    li.appendChild(text);
+    li.appendChild(completeBtn);
+    li.appendChild(deleteBtn);
+
+    taskList.appendChild(li);
+
+}
+
+// POST TODO
+
+addBtn.addEventListener("click",()=>{
+
+    const task=taskInput.value.trim();
+
+    if(task===""){
+        alert("Please enter a task");
+        return;
+    }
+
+    fetch("https://dummyjson.com/todos/add",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            todo:task,
+
+            completed:false,
+
+            userId:1
+
+        })
+
+    })
+
+    .then((response)=>response.json())
+
+    .then((newTodo)=>{
+
+        displayTodo(newTodo);
+
+        taskInput.value="";
+
+    })
+
+    .catch((error)=>console.log(error));
+
+});
+
+// REFRESH BUTTON
+
+refreshBtn.addEventListener("click",()=>{
+
+    getTodos();
+
+});
+
+// INITIAL LOAD
+
+getTodos();
