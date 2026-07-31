@@ -1,68 +1,149 @@
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
+const refreshBtn = document.getElementById("refreshBtn");
 const taskList = document.getElementById("taskList");
 
-let todos = [];
+// GET TODOS
+function getTodos() {
 
-fetch("https://dummyjson.com/todos")
-  .then((res) => res.json())
-  .then((data) => {
-    todos = data.todos.slice(0, 10);
-    displayTodos();
-  })
-  .catch((err) => console.log(err));
+    taskList.innerHTML = "";
 
-// Display all todos
-function displayTodos() {
+    fetch("https://dummyjson.com/todos")
+        .then((response) => response.json())
+        .then((data) => {
 
-  taskList.innerHTML = "";
+            data.todos.slice(0, 10).forEach((todo) => {
 
-  todos.forEach((todo) => {
+                displayTodo(todo);
+
+            });
+
+        })
+        .catch((error) => console.log(error));
+
+}
+
+// DISPLAY TODO
+function displayTodo(todo) {
 
     const li = document.createElement("li");
 
     const text = document.createElement("span");
+
     text.innerText = todo.todo;
 
     if (todo.completed) {
-      text.style.textDecoration = "line-through";
+        text.style.textDecoration = "line-through";
     }
 
-    // Complete Button
+    // COMPLETE BUTTON
+
     const completeBtn = document.createElement("button");
+
     completeBtn.innerText = "✔ Complete";
+
     completeBtn.classList.add("completeBtn");
 
     completeBtn.addEventListener("click", () => {
-      todo.completed = true;
-      displayTodos();
+
+        fetch(`https://dummyjson.com/todos/${todo.id}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                completed: true
+            })
+
+        })
+
+            .then((response) => response.json())
+
+            .then(() => {
+
+                text.style.textDecoration = "line-through";
+
+            });
+
     });
 
-    // Edit Button
-    const editBtn = document.createElement("button");
-    editBtn.innerText = "✏ Edit";
-     editBtn.classList.add("editBtn");
+    // EDIT BUTTON
 
-    editBtn.addEventListener("click", () => {
+    // EDIT BUTTON
 
-      const updatedTask = prompt("Edit Todo", todo.todo);
+const editBtn = document.createElement("button");
 
-      if (updatedTask && updatedTask.trim() !== "") {
-        todo.todo = updatedTask.trim();
-        displayTodos();
-      }
+editBtn.innerText = "✏ Edit";
+
+editBtn.classList.add("editBtn");
+
+editBtn.addEventListener("click", () => {
+
+    const input = document.createElement("input");
+
+    input.type = "text";
+
+    input.value = todo.todo;
+
+    li.replaceChild(input, text);
+
+    input.focus();
+
+    input.addEventListener("blur", () => {
+
+        fetch(`https://dummyjson.com/todos/${todo.id}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                todo: input.value
+            })
+
+        })
+        .then(response => response.json())
+        .then(() => {
+
+            todo.todo = input.value;
+
+            text.innerText = input.value;
+
+            li.replaceChild(text, input);
+
+        });
 
     });
 
-    // Delete Button
+});
+    // DELETE BUTTON
+
     const deleteBtn = document.createElement("button");
-    deleteBtn.innerText = "🗑 Delete";
-    deleteBtn.classList.add("deleteBtn");
-    deleteBtn.addEventListener("click", () => {
-       alert("Are you sure you want to delete this todo");
-      todos = todos.filter((t) => t.id !== todo.id);
 
-      displayTodos();
+    deleteBtn.innerText = "🗑 Delete";
+
+    deleteBtn.classList.add("deleteBtn");
+
+    deleteBtn.addEventListener("click", () => {
+
+        fetch(`https://dummyjson.com/todos/${todo.id}`, {
+
+            method: "DELETE"
+
+        })
+
+            .then((response) => response.json())
+
+            .then(() => {
+
+                li.remove();
+
+            });
 
     });
 
@@ -73,30 +154,64 @@ function displayTodos() {
 
     taskList.appendChild(li);
 
-  });
-
 }
 
-// Add Todo
+// POST TODO
+
 addBtn.addEventListener("click", () => {
 
-  const task = taskInput.value.trim();
+    const task = taskInput.value.trim();
 
-  if (task === "") {
-    alert("Please enter a task");
-    return;
-  }
+    if (task === "") {
 
-  const newTodo = {
-    id: Date.now(),
-    todo: task,
-    completed: false,
-  };
+        alert("Please enter a task");
 
-  todos.push(newTodo);
+        return;
 
-  taskInput.value = "";
+    }
 
-  displayTodos();
+    fetch("https://dummyjson.com/todos/add", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            todo: task,
+
+            completed: false,
+
+            userId: 1
+
+        })
+
+    })
+
+        .then((response) => response.json())
+
+        .then((newTodo) => {
+
+            displayTodo(newTodo);
+
+            taskInput.value = "";
+
+        })
+
+        .catch((error) => console.log(error));
 
 });
+
+// REFRESH BUTTON
+
+refreshBtn.addEventListener("click", () => {
+
+    getTodos();
+
+});
+
+// INITIAL LOAD
+
+getTodos();
