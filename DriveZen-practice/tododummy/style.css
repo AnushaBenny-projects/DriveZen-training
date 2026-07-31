@@ -58,14 +58,16 @@ button{
     background:#17a2b8;
 }
 
-.complete-btn{
+.completeBtn{
     background:#28a745;
 }
 
-.delete-btn{
+.deleteBtn{
     background:#dc3545;
 }
-
+.editBtn{
+    background:#9face6;
+}
 ul{
     list-style:none;
 }
