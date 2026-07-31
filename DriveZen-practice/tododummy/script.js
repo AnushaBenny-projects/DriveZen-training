@@ -1,162 +1,102 @@
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
-const refreshBtn = document.getElementById("refreshBtn");
 const taskList = document.getElementById("taskList");
 
-// GET TODOS
-function getTodos() {
+let todos = [];
 
-    taskList.innerHTML = "";
+fetch("https://dummyjson.com/todos")
+  .then((res) => res.json())
+  .then((data) => {
+    todos = data.todos.slice(0, 10);
+    displayTodos();
+  })
+  .catch((err) => console.log(err));
 
-    fetch("https://dummyjson.com/todos")
-        .then((response) => response.json())
-        .then((data) => {
+// Display all todos
+function displayTodos() {
 
-            data.todos.slice(0,10).forEach((todo) => {
+  taskList.innerHTML = "";
 
-                displayTodo(todo);
-
-            });
-
-        })
-        .catch((error) => console.log(error));
-
-}
-
-// DISPLAY TODO
-function displayTodo(todo){
+  todos.forEach((todo) => {
 
     const li = document.createElement("li");
 
     const text = document.createElement("span");
-
     text.innerText = todo.todo;
 
-    if(todo.completed){
-        text.style.textDecoration="line-through";
+    if (todo.completed) {
+      text.style.textDecoration = "line-through";
     }
 
-    // COMPLETE BUTTON
-
+    // Complete Button
     const completeBtn = document.createElement("button");
+    completeBtn.innerText = "✔ Complete";
+    completeBtn.classList.add("completeBtn");
 
-    completeBtn.innerText="✔ Complete";
+    completeBtn.addEventListener("click", () => {
+      todo.completed = true;
+      displayTodos();
+    });
 
-    completeBtn.classList.add("complete-btn");
+    // Edit Button
+    const editBtn = document.createElement("button");
+    editBtn.innerText = "✏ Edit";
+     editBtn.classList.add("editBtn");
 
-    completeBtn.addEventListener("click",()=>{
+    editBtn.addEventListener("click", () => {
 
-        fetch(`https://dummyjson.com/todos/${todo.id}`,{
+      const updatedTask = prompt("Edit Todo", todo.todo);
 
-            method:"PUT",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-                completed:true
-            })
-
-        })
-
-        .then((response)=>response.json())
-
-        .then(()=>{
-
-            text.style.textDecoration="line-through";
-
-        });
+      if (updatedTask && updatedTask.trim() !== "") {
+        todo.todo = updatedTask.trim();
+        displayTodos();
+      }
 
     });
 
-    // DELETE BUTTON
+    // Delete Button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "🗑 Delete";
+    deleteBtn.classList.add("deleteBtn");
+    deleteBtn.addEventListener("click", () => {
+       alert("Are you sure you want to delete this todo");
+      todos = todos.filter((t) => t.id !== todo.id);
 
-    const deleteBtn=document.createElement("button");
-
-    deleteBtn.innerText="🗑 Delete";
-
-    deleteBtn.classList.add("delete-btn");
-
-    deleteBtn.addEventListener("click",()=>{
-
-        fetch(`https://dummyjson.com/todos/${todo.id}`,{
-
-            method:"DELETE"
-
-        })
-
-        .then((response)=>response.json())
-
-        .then(()=>{
-
-            li.remove();
-
-        });
+      displayTodos();
 
     });
 
     li.appendChild(text);
     li.appendChild(completeBtn);
+    li.appendChild(editBtn);
     li.appendChild(deleteBtn);
 
     taskList.appendChild(li);
 
+  });
+
 }
 
-// POST TODO
+// Add Todo
+addBtn.addEventListener("click", () => {
 
-addBtn.addEventListener("click",()=>{
+  const task = taskInput.value.trim();
 
-    const task=taskInput.value.trim();
+  if (task === "") {
+    alert("Please enter a task");
+    return;
+  }
 
-    if(task===""){
-        alert("Please enter a task");
-        return;
-    }
+  const newTodo = {
+    id: Date.now(),
+    todo: task,
+    completed: false,
+  };
 
-    fetch("https://dummyjson.com/todos/add",{
+  todos.push(newTodo);
 
-        method:"POST",
+  taskInput.value = "";
 
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-
-            todo:task,
-
-            completed:false,
-
-            userId:1
-
-        })
-
-    })
-
-    .then((response)=>response.json())
-
-    .then((newTodo)=>{
-
-        displayTodo(newTodo);
-
-        taskInput.value="";
-
-    })
-
-    .catch((error)=>console.log(error));
+  displayTodos();
 
 });
-
-// REFRESH BUTTON
-
-refreshBtn.addEventListener("click",()=>{
-
-    getTodos();
-
-});
-
-// INITIAL LOAD
-
-getTodos();
