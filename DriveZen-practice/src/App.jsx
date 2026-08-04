@@ -1,16 +1,29 @@
 import { useEffect, useState } from "react";
+
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import ThemeToggle from "./components/ThemeToggle";
+
+import useTheme from "./hooks/useTheme";
+
 import "./App.css";
 
 function App() {
 
+  // API URL FROM .env
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  // TODO STATE
   const [todos, setTodos] = useState([]);
+
+  // CUSTOM THEME HOOK
+  const { theme, toggleTheme } = useTheme();
+
 
   // GET TODOS
   useEffect(() => {
 
-    fetch("https://dummyjson.com/todos")
+    fetch(`${API_URL}/todos`)
       .then((response) => response.json())
       .then((data) => {
 
@@ -18,16 +31,18 @@ function App() {
 
       })
       .catch((error) => {
+
         console.log(error);
+
       });
 
-  }, []);
+  }, [API_URL]);
 
 
   // POST - ADD TODO
   function addTodo(task) {
 
-    fetch("https://dummyjson.com/todos/add", {
+    fetch(`${API_URL}/todos/add`, {
 
       method: "POST",
 
@@ -46,12 +61,16 @@ function App() {
 
       .then((newTodo) => {
 
-        setTodos([...todos, newTodo]);
+        setTodos((currentTodos) => [
+          ...currentTodos,
+          newTodo
+        ]);
 
       })
-
       .catch((error) => {
+
         console.log(error);
+
       });
 
   }
@@ -60,7 +79,7 @@ function App() {
   // PUT - COMPLETE TODO
   function completeTodo(todo) {
 
-    fetch(`https://dummyjson.com/todos/${todo.id}`, {
+    fetch(`${API_URL}/todos/${todo.id}`, {
 
       method: "PUT",
 
@@ -77,22 +96,27 @@ function App() {
 
       .then(() => {
 
-        const updatedTodos = todos.map((item) => {
+        setTodos((currentTodos) =>
+          currentTodos.map((item) => {
 
-          if (item.id === todo.id) {
+            if (item.id === todo.id) {
 
-            return {
-              ...item,
-              completed: true
-            };
+              return {
+                ...item,
+                completed: true
+              };
 
-          }
+            }
 
-          return item;
+            return item;
 
-        });
+          })
+        );
 
-        setTodos(updatedTodos);
+      })
+      .catch((error) => {
+
+        console.log(error);
 
       });
 
@@ -102,7 +126,11 @@ function App() {
   // PUT - EDIT TODO
   function editTodo(todo, newText) {
 
-    fetch(`https://dummyjson.com/todos/${todo.id}`, {
+    if (newText.trim() === "") {
+      return;
+    }
+
+    fetch(`${API_URL}/todos/${todo.id}`, {
 
       method: "PUT",
 
@@ -119,22 +147,27 @@ function App() {
 
       .then(() => {
 
-        const updatedTodos = todos.map((item) => {
+        setTodos((currentTodos) =>
+          currentTodos.map((item) => {
 
-          if (item.id === todo.id) {
+            if (item.id === todo.id) {
 
-            return {
-              ...item,
-              todo: newText
-            };
+              return {
+                ...item,
+                todo: newText
+              };
 
-          }
+            }
 
-          return item;
+            return item;
 
-        });
+          })
+        );
 
-        setTodos(updatedTodos);
+      })
+      .catch((error) => {
+
+        console.log(error);
 
       });
 
@@ -144,7 +177,7 @@ function App() {
   // DELETE TODO
   function deleteTodo(todo) {
 
-    fetch(`https://dummyjson.com/todos/${todo.id}`, {
+    fetch(`${API_URL}/todos/${todo.id}`, {
 
       method: "DELETE"
 
@@ -153,11 +186,16 @@ function App() {
 
       .then(() => {
 
-        const updatedTodos = todos.filter(
-          (item) => item.id !== todo.id
+        setTodos((currentTodos) =>
+          currentTodos.filter(
+            (item) => item.id !== todo.id
+          )
         );
 
-        setTodos(updatedTodos);
+      })
+      .catch((error) => {
+
+        console.log(error);
 
       });
 
@@ -166,11 +204,26 @@ function App() {
 
   return (
 
-    <div className="container">
+    <div className={`container ${theme}`}>
+
+      {/* THEME BUTTON */}
+
+      <ThemeToggle
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
+
 
       <h1>Todo App</h1>
 
-      <TodoForm addTodo={addTodo} />
+
+      {/* ADD TODO */}
+
+      <TodoForm
+        addTodo={addTodo}
+      />
+
+
 
       <TodoList
         todos={todos}
