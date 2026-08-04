@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+}
+
+.app.light {
+  --page-bg: #f4f4f4;
+  --panel-bg: #ffffff;
+  --todo-bg: #eeeeee;
+  --text-color: #111111;
+  --muted-text: #666666;
+  --input-bg: #ffffff;
+  --input-border: #cccccc;
+}
+
+.app.dark {
+  --page-bg: #15171c;
+  --panel-bg: #22252d;
+  --todo-bg: #30343d;
+  --text-color: #f5f5f5;
+  --muted-text: #b5b5b5;
+  --input-bg: #181a20;
+  --input-border: #4b5563;
+}
+
+.container {
+  width: 700px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: var(--panel-bg);
+  padding: 25px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.inputBox {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.inputBox input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.inputBox input,
+.todo input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
+  border-radius: 5px;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.themeBtn {
+  background-color: var(--todo-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
+}
+
+.addBtn {
+  background-color: blue;
+  color: white;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background-color: var(--todo-bg);
+
+  padding: 12px;
+  margin-bottom: 10px;
+
+  border-radius: 6px;
+}
+
+.todo span {
+  flex: 1;
+}
+
+.todo input {
+  flex: 1;
+  padding: 8px;
+}
+
+.completeBtn {
+  background-color: green;
+  color: white;
+}
+
+.editBtn {
+  background-color: orange;
+  color: white;
+}
+
+.deleteBtn {
+  background-color: red;
+  color: white;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: var(--muted-text);
+}

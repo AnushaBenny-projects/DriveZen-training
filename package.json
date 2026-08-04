@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/AnushaBenny-projects/DriveZen-training/issues"
   },
-  "homepage": "https://github.com/AnushaBenny-projects/DriveZen-training#readme"
+  "homepage": "https://github.com/AnushaBenny-projects/DriveZen-training#readme",
+  "dependencies": {
+    "react-router-dom": "^7.18.2"
+  }
 }
