@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1,
+    "todo": "complete work",
+    "completed": false,
+    "userId": 1
+  }
+]

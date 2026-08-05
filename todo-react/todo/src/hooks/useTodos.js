@@ -10,28 +10,23 @@ function useTodos(apiUrl) {
 
   const [todos, setTodos] = useState([]);
 
-  useEffect(() => {
-
-    async function fetchTodos() {
-
-      try {
-        const todoList = await getTodos(apiUrl);
-        setTodos(todoList);
-      } catch (error) {
-        console.log(error);
-      }
-
+  async function reloadTodos() {
+    try {
+      const todoList = await getTodos(apiUrl);
+      setTodos(todoList);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    fetchTodos();
-
+  useEffect(() => {
+    reloadTodos();
   }, [apiUrl]);
 
   async function addTodo(task) {
-
     try {
-      const newTodo = await postTodo(apiUrl, task);
-      setTodos((currentTodos) => [...currentTodos, newTodo]);
+      await postTodo(apiUrl, task);
+      await reloadTodos();
     } catch (error) {
       console.log(error);
     }
@@ -46,21 +41,7 @@ function useTodos(apiUrl) {
       await putTodo(apiUrl, todo, {
         completed: nextCompleted
       });
-
-      setTodos((currentTodos) => (
-        currentTodos.map((item) => {
-
-          if (item.id === todo.id) {
-            return {
-              ...item,
-              completed: nextCompleted
-            };
-          }
-
-          return item;
-
-        })
-      ));
+      await reloadTodos();
     } catch (error) {
       console.log(error);
     }
@@ -73,21 +54,7 @@ function useTodos(apiUrl) {
       await putTodo(apiUrl, todo, {
         todo: newText
       });
-
-      setTodos((currentTodos) => (
-        currentTodos.map((item) => {
-
-          if (item.id === todo.id) {
-            return {
-              ...item,
-              todo: newText
-            };
-          }
-
-          return item;
-
-        })
-      ));
+      await reloadTodos();
     } catch (error) {
       console.log(error);
     }
@@ -98,10 +65,7 @@ function useTodos(apiUrl) {
 
     try {
       await deleteTodoRequest(apiUrl, todo);
-
-      setTodos((currentTodos) => (
-        currentTodos.filter((item) => item.id !== todo.id)
-      ));
+      await reloadTodos();
     } catch (error) {
       console.log(error);
     }

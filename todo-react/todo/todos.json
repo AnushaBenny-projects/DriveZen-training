@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "todo": "Learn React",
+    "completed": true,
+    "userId": 1
+  },
+  {
+    "id": 2,
+    "todo": "Build a backend for the todo app",
+    "completed": false,
+    "userId": 1
+  },
+  {
+    "id": 3,
+    "todo": "Wire API calls to the server",
+    "completed": true,
+    "userId": 1
+  }
+]
