@@ -8,16 +8,15 @@ type StudentListProps = {
   students: Student[];
 };
 
-function StudentList({ students }: StudentListProps) {
+export default function StudentList({
+  students,
+}: StudentListProps) {
   return (
     <div>
       <h2>Students</h2>
 
       {students.map((student) => (
-        <div
-          className="student-card"
-          key={student.id}
-        >
+        <div key={student.id}>
           <h3>{student.name}</h3>
           <p>{student.course}</p>
         </div>
@@ -25,5 +24,3 @@ function StudentList({ students }: StudentListProps) {
     </div>
   );
 }
-
-export default StudentList;
