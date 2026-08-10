@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "todo": "Sample todo",
+    "completed": false,
+    "userId": 1
+  },
+  {
+    "id": 2,
+    "todo": "complete work at today",
+    "completed": false,
+    "userId": 1
+  },
+  {
+    "id": 3,
+    "todo": " complete work ",
+    "completed": false,
+    "userId": 1
+  },
+  {
+    "id": 4,
+    "todo": "Buy milk at morning",
+    "completed": false,
+    "userId": 1
+  }
+]
